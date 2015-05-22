@@ -1,0 +1,45 @@
+<h1>Albums</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <th ng-repeat="header in headers" disco-sortable sorter="sorter" field="{{ header }}"></th>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td ng-repeat="header in headers" ng-switch on="header">
+                <select ng-switch-when="genre" ng-model="search[header]" ng-options="genre for genre in genres">
+                    <option></option>
+                </select>
+                <input ng-switch-when="duration" type="number" ng-model="search[header]" />
+                <input ng-switch-when="tracksCount" type="number" ng-model="search[header]" />
+                <select ng-switch-when="isLive" ng-model="search[header]" ng-options="value for value in ['true', 'false']">
+                    <option></option>
+                </select>
+                <input ng-switch-default ng-model="search[header]" />
+            </td>
+        </tr>
+        <tr ng-repeat="album in albums | filter:search:strict | orderBy:sorter.field:sorter.reverse">
+            <td ng-repeat="header in headers" ng-switch on="header">
+                <span ng-switch-when="description">{{ album[header] | truncate }}</span>
+                <span ng-switch-when="artist">{{ album[header].name }} <gravatar size="70" email="{{ album[header].email }}"></gravatar></span>
+                <span ng-switch-when="releaseDate">{{ album[header] | date }}</span>
+                <span ng-switch-default>{{ album[header] }}</span>
+            </td>
+            <td>
+                <a ui-sref="show_album({id: album.id})">Show</a>
+                <a href="" ng-click="deleteAlbum(album)">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td ng-repeat="header in headers" ng-switch on="header">
+                <span ng-switch-when="tracksCount">{{ albums | filter:search:strict | pluck:'tracksCount' | average | number }}</span>
+                <span ng-switch-when="duration">{{ albums | filter:search:strict | pluck:'duration' | average | number }}</span>
+                <span ng-switch-default></span>
+            </td>
+        </tr>
+    </tfoot>
+</table>

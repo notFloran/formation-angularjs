@@ -1,0 +1,42 @@
+<h1>New album</h1>
+
+<form name="newAlbum" ng-submit="createAlbum(newAlbum, album)" novalidate>
+    <p class="text-danger" ng-show="newAlbum.$invalid && newAlbum.$submitted">Errors in the form</p>
+
+    <div class="form-group" ng-class="{'has-error': newAlbum.title.$invalid && newAlbum.title.$dirty }">
+        <label for="title">Title</label>
+        <input id="title" class="form-control" minlength="6" name="title" ng-model="album.title" required />
+        <div ng-messages="newAlbum.title.$error" ng-if="newAlbum.$submitted || newAlbum.title.$dirty" ng-messages-multiple>
+            <div class="text-danger" ng-message="required">We need a title !</div>
+            <div class="text-danger" ng-message="minlength">We need a title with more than 6 characters !</div>
+        </div>
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.artist.$invalid && newAlbum.artist.$dirty}">
+        <label for="artist">Artist</label>
+        <input id="artist" class="form-control" name="artist" ng-model="album.artist" required />
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.description.$invalid && newAlbum.description.$dirty}">
+        <label for="artist">Description</label>
+        <textarea id="description" class="form-control" name="description" ng-model="album.description"></textarea>
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.tracksCount.$invalid && newAlbum.tracksCount.$dirty}">
+        <label for="tracksCount">Tracks count</label>
+        <input id="tracksCount" type="number" class="form-control" name="tracksCount" ng-model="album.tracksCount" required />
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.duration.$invalid && newAlbum.duration.$dirty}">
+        <label for="duration">Duration</label>
+        <input id="duration" class="form-control" type="duration" name="duration" ng-model="album.duration" required />
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.genre.$invalid && newAlbum.genre.$dirty}">
+        <label for="duration">Genre</label>
+        <select ng-model="album.genre" class="form-control" ng-options="genre for genre in genres">
+            <option></option>
+        </select>
+    </div>
+    <div class="form-group" ng-class="{'has-error': newAlbum.isLive.$invalid && newAlbum.isLive.$dirty}">
+        <label>Live</label>
+        <input type="radio" name="isLive" ng-model="album.isLive" value="true" />
+        <input type="radio" name="isLive" ng-model="album.isLive" value="false" />
+    </div>
+    <input type="submit" />
+</form>

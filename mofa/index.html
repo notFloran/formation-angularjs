@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Mofa</title>
+ <meta charset=UTF-8">
+ <script src="bower_components/angular/angular.min.js"></script>
+ <script src="mofafegoli.js"></script>
+</head>
+<style>
+  .hi {
+    background-color: red;
+  }
+</style>
+<body ng-app="app">
+
+<div ng-controller="MofaController">
+
+  <table border="1">
+   <tr>
+    <th></th>
+    <th ng-repeat="vowel in mofa.vowels">{{ vowel }}</th>
+   </tr>
+   <tr ng-repeat="consonant in mofa.consonants">
+    <th>{{ consonant }}</th>
+    <td ng-repeat="vowel in mofa.vowels" ng-class="{ hi: isHi(consonant, vowel) }">{{  mofa.convert(consonant + vowel) }}</td>
+   </tr>
+  </table>
+
+ <br />
+
+  <input ng-model="query"/>
+  <output>{{ mofa.convert(query) }}</output>
+
+</div>
+
+<script>
+
+ angular.module("app", [])
+         .controller("MofaController", function($scope, MofaService) {
+           $scope.query = "";
+           $scope.mofa = MofaService;
+
+           $scope.isHi = function(consonant, vowel) {
+            var value = $scope.query;
+
+            if(!isNaN(value)) {
+             value = MofaService.convert(value);
+            }
+
+            return value.includes(consonant + vowel);
+           }
+         })
+         .service("MofaService", function() {
+           return mofafegoli;
+         })
+
+</script>
+</body>
+</html>
+
